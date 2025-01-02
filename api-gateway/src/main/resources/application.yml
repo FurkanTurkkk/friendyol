@@ -7,10 +7,20 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: auth-service
-          uri: lb://auth-service
+        - id: category-service
+          uri: lb://category-service
           predicates:
-            - Path=/api/v1/user/**
+            - Path=/api/v1/category/**
+
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/v1/product/**
+
+        - id: stock-service
+          uri: lb://stock-service
+          predicates:
+            - Path=/api/v1/stock/**
 
 eureka:
   client:
