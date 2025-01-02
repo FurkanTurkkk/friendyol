@@ -24,6 +24,7 @@ public class Product {
     private BigDecimal price;
 
     public Product() {
+        this.color="-";
     }
 
     public Product(String name, String categoryId, Long supplierId, String color, String description, BigDecimal price) {

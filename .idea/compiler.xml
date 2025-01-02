@@ -9,8 +9,8 @@
         <module name="api-gateway" />
         <module name="stock-service" />
         <module name="product-service" />
-        <module name="shared-dto" />
         <module name="eureka-server" />
+        <module name="shared-dtos" />
       </profile>
       <profile name="Annotation profile for category-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -24,6 +24,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="auth-service" target="17" />
+      <module name="shared-dto" target="23" />
       <module name="shared-request" target="23" />
     </bytecodeTargetLevel>
   </component>
