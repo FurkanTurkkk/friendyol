@@ -5,11 +5,11 @@ import com.friendyol_management.category_service.feignclient.ProductFeignClient;
 import com.friendyol_management.category_service.model.Category;
 import com.friendyol_management.category_service.repository.CategoryRepository;
 import com.friendyol_management.category_service.request.RequestForCreateCategory;
+import feign.FeignException;
 import org.example.CategoryDto;
 import org.example.ProductDto;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,8 +37,14 @@ public class CategoryService {
         return findCategoryByCategoryId(categoryId).getName();
     }
 
+    public CategoryDto updateCategoryNameByCategoryId(String categoryId,String categoryName){
+        Category category=findCategoryById(categoryId);
+        category.updateCategoryName(categoryName);
+        categoryRepository.save(category);
+        return converter.convert(category);
+    }
+
     public List<ProductDto> findProductListByCategoryId(String categoryId){
-        System.out.println("findProductListByCategoryId deyim");
         return productFeignClient.findProductListByCategoryId(categoryId).getBody();
     }
 
@@ -52,12 +58,21 @@ public class CategoryService {
         return categories.stream().map(converter::convert).toList();
     }
 
+    public String deleteCategoryByCategoryId(String categoryId){
+        Category category=findCategoryById(categoryId);
+        if (findProductListByCategoryId(categoryId) != null){
+            throw new IllegalArgumentException("Kategoriye ait ürünler mevcut silmeden önce ürünlerin kategorilerini güncelleyin!");
+        }
+        categoryRepository.delete(category);
+        return "Category başarıyla silindi kategoriye ait ürünlerin kategorileri silindi";
+    }
+
     private List<Category> getAllCategoryList(){
         return categoryRepository.findAll();
     }
 
-    private Category findCategoryById(String id){
-        return categoryRepository.findById(id)
+    private Category findCategoryById(String categoryId){
+        return categoryRepository.findById(categoryId)
                 .orElseThrow(()->new RuntimeException("Kategory bulunamadı"));
     }
 

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -16,6 +17,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String name;
     private String categoryId;
     private Long supplierId;
@@ -76,5 +78,9 @@ public class Product {
         return Objects.hash(name, color);
     }
 
+    public Product updateCategoryIdOfProduct(String categoryId){
+        this.categoryId=categoryId;
+        return this;
+    }
 
 }

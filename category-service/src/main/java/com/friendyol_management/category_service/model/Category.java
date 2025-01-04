@@ -42,4 +42,8 @@ public class Category {
     public int hashCode() {
         return Objects.hashCode(name);
     }
+
+    public void updateCategoryName(String categoryName){
+        this.name=categoryName;
+    }
 }

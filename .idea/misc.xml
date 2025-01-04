@@ -13,11 +13,13 @@
         <option value="$PROJECT_DIR$/shared-dto/pom.xml" />
         <option value="$PROJECT_DIR$/shared-request/pom.xml" />
         <option value="$PROJECT_DIR$/shared-dtos/pom.xml" />
+        <option value="$PROJECT_DIR$/shared-requests/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/shared-request/pom.xml" />
+        <option value="$PROJECT_DIR$/shared-requests/pom.xml" />
       </set>
     </option>
   </component>

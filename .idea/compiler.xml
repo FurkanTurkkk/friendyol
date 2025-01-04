@@ -26,6 +26,7 @@
       <module name="auth-service" target="17" />
       <module name="shared-dto" target="23" />
       <module name="shared-request" target="23" />
+      <module name="shared-requests" target="23" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

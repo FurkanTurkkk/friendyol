@@ -4,6 +4,8 @@ import com.friendyol.product_service.converter.DtoConverter;
 import com.friendyol.product_service.model.Product;
 import com.friendyol.product_service.repository.ProductRepository;
 import com.friendyol.product_service.request.RequestForCreateProduct;
+import com.friendyol.product_service.util.FeignClientService;
+import jakarta.transaction.Transactional;
 import org.example.ProductDto;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +15,12 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     private final DtoConverter converter;
+    private final FeignClientService feignClientService;
 
-    public ProductService(ProductRepository productRepository, DtoConverter converter) {
+    public ProductService(ProductRepository productRepository, DtoConverter converter, FeignClientService feignClientService) {
         this.productRepository = productRepository;
         this.converter = converter;
+        this.feignClientService = feignClientService;
     }
 
     public ProductDto createProduct(RequestForCreateProduct request){
@@ -27,7 +31,12 @@ public class ProductService {
                 request.getDescription(),
                 request.getPrice());
         saveProduct(product);
+        feignClientService.createStock(product.getId(),0L);
         return converter.convert(product);
+    }
+
+    public String findProductNameByProductId(Long productId){
+        return findProductById(productId).getName();
     }
 
     public ProductDto findProductByProductId(Long id){
@@ -36,16 +45,32 @@ public class ProductService {
     }
 
     public List<ProductDto> findProductListByCategoryId(String categoryId){
-        List<Product> productList=findAllProduct(categoryId);
-        System.out.println(productList);
+        List<Product> productList= findAllProductByCategoryId(categoryId);
         return productList.stream().map(converter::convert).toList();
     }
 
+
+    public List<ProductDto> updateCategoryOfProductByCategoryId(String oldCategoryId,String newCategoryId){
+        List<Product> existProductList=findAllProductByCategoryId(oldCategoryId);
+        List<Product> registeredProductList=existProductList.stream()
+                .map(product -> product.updateCategoryIdOfProduct(newCategoryId)).toList();
+        registeredProductList.stream().forEach(productRepository::save);
+        return registeredProductList.stream().map(converter::convert).toList();
+    }
+
+    @Transactional
+    public void deleteProductByProductId(Long productId){
+        Product product=findProductById(productId);
+        productRepository.delete(product);
+        feignClientService.deleteStockInformationByProductId(productId);
+    }
+
     public void deleteAllProduct(){
+
         productRepository.deleteAll();
     }
 
-    private List<Product> findAllProduct(String categoryId){
+    private List<Product> findAllProductByCategoryId(String categoryId){
         return productRepository.findByCategoryId(categoryId);
     }
 
@@ -55,10 +80,14 @@ public class ProductService {
     }
 
     private void saveProduct(Product product){
+        if(feignClientService.getCategoryNameByCategoryId(product).isEmpty()){
+            throw new RuntimeException("Kategori bulunamadı");
+        }
         if (productRepository.findByNameAndColor(product.getName(),product.getColor()).isPresent()){
             throw new IllegalArgumentException("Ürün mevcut güncellemek için güncelleme sayfasına gidin");
         }
         productRepository.save(product);
     }
+
 
 }

@@ -18,9 +18,15 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping
+    @PostMapping("/add-product")
     public ResponseEntity<ProductDto> createProduct(@RequestBody RequestForCreateProduct request){
         return ResponseEntity.ok(productService.createProduct(request));
+    }
+
+    @PutMapping("/update-category/old-category/{oldCategoryId}/new-category/{newCategoryId}")
+    public ResponseEntity<List<ProductDto>> updateCategoryOfProductByCategoryId(@PathVariable("oldCategoryId")String oldCategoryId,
+                                                                          @PathVariable("newCategoryId")String newCategoryId){
+        return ResponseEntity.ok(productService.updateCategoryOfProductByCategoryId(oldCategoryId,newCategoryId));
     }
 
     @GetMapping("/{productId}")
@@ -28,12 +34,23 @@ public class ProductController {
         return ResponseEntity.ok(productService.findProductByProductId(id));
     }
 
-    @GetMapping("/products/{categoryId}")
+    @GetMapping("/get-all-products/category/{categoryId}")
     public ResponseEntity<List<ProductDto>> findProductListByCategoryId(@PathVariable("categoryId")String categoryId){
         return ResponseEntity.ok(productService.findProductListByCategoryId(categoryId));
     }
 
-    @DeleteMapping
+    @GetMapping("product-name/{productId}")
+    public ResponseEntity<String> findProductNameByProductId(@PathVariable("productId")Long id){
+        return ResponseEntity.ok(productService.findProductNameByProductId(id));
+    }
+
+    @DeleteMapping("/delete-by-productId/{productId}")
+    public ResponseEntity<String> deleteProductByProductId(@PathVariable("productId")Long productId){
+        productService.deleteProductByProductId(productId);
+        return ResponseEntity.ok("Ürün başarıyla silindi stok bilgisi kaldırıldı");
+    }
+
+    @DeleteMapping("/delete-all")
     public ResponseEntity<String> deleteAllProduct(){
         productService.deleteAllProduct();
         return ResponseEntity.ok("Tüm ürünler kaldırıldı");

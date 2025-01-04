@@ -1,6 +1,5 @@
 package com.friendyol_management.category_service.controller;
 
-import com.friendyol_management.category_service.model.Category;
 import com.friendyol_management.category_service.request.RequestForCreateCategory;
 import com.friendyol_management.category_service.service.CategoryService;
 import org.example.CategoryDto;
@@ -20,9 +19,15 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<CategoryDto> createCategory(@RequestBody RequestForCreateCategory request){
         return ResponseEntity.ok(categoryService.createCategory(request));
+    }
+
+    @PutMapping("/update-category-name/{categoryId}")
+    public ResponseEntity<CategoryDto> updateCategoryName(@PathVariable("categoryId")String fromCategoryId,
+                                                          @RequestBody String categoryName){
+        return ResponseEntity.ok(categoryService.updateCategoryNameByCategoryId(fromCategoryId,categoryName));
     }
 
     @GetMapping("/all-product/{categoryId}")
@@ -40,4 +45,8 @@ public class CategoryController {
         return categoryService.findAllCategories();
     }
 
+    @DeleteMapping("/delete-category-by-categoryId/{categoryId}")
+    public ResponseEntity<String> deleteCategoryByCategoryId(@PathVariable("categoryId")String categoryId){
+        return ResponseEntity.ok(categoryService.deleteCategoryByCategoryId(categoryId));
+    }
 }
