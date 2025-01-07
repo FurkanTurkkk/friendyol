@@ -6,11 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="api-gateway" />
         <module name="stock-service" />
-        <module name="product-service" />
-        <module name="eureka-server" />
+        <module name="cart-service" />
+        <module name="auth-service" />
         <module name="shared-dtos" />
+        <module name="api-gateway" />
+        <module name="product-service" />
+        <module name="order-service" />
+        <module name="eureka-server" />
       </profile>
       <profile name="Annotation profile for category-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -23,7 +26,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="auth-service" target="17" />
+      <module name="cart-item-service" target="17" />
+      <module name="order-item-service" target="17" />
       <module name="shared-dto" target="23" />
       <module name="shared-request" target="23" />
       <module name="shared-requests" target="23" />
@@ -33,8 +37,12 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
       <module name="auth-service" options="-parameters" />
+      <module name="cart-item-service" options="-parameters" />
+      <module name="cart-service" options="-parameters" />
       <module name="category-service" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
+      <module name="order-item-service" options="-parameters" />
+      <module name="order-service" options="-parameters" />
       <module name="product-service" options="-parameters" />
       <module name="stock-service" options="-parameters" />
     </option>

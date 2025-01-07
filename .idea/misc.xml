@@ -14,6 +14,10 @@
         <option value="$PROJECT_DIR$/shared-request/pom.xml" />
         <option value="$PROJECT_DIR$/shared-dtos/pom.xml" />
         <option value="$PROJECT_DIR$/shared-requests/pom.xml" />
+        <option value="$PROJECT_DIR$/cart-item-service/pom.xml" />
+        <option value="$PROJECT_DIR$/cart-service/pom.xml" />
+        <option value="$PROJECT_DIR$/order-item-service/pom.xml" />
+        <option value="$PROJECT_DIR$/order-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

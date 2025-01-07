@@ -6,6 +6,7 @@ import org.example.ProductDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -37,6 +38,11 @@ public class ProductController {
     @GetMapping("/get-all-products/category/{categoryId}")
     public ResponseEntity<List<ProductDto>> findProductListByCategoryId(@PathVariable("categoryId")String categoryId){
         return ResponseEntity.ok(productService.findProductListByCategoryId(categoryId));
+    }
+
+    @GetMapping("/product-price/{productId}")
+    public ResponseEntity<BigDecimal> findProductPriceByProductId(@PathVariable("productId")Long productId){
+        return ResponseEntity.ok(productService.findProductPriceByProductId(productId));
     }
 
     @GetMapping("product-name/{productId}")

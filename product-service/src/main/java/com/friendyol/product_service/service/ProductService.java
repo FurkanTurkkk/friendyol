@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.example.ProductDto;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -58,6 +59,11 @@ public class ProductService {
         return registeredProductList.stream().map(converter::convert).toList();
     }
 
+    public BigDecimal findProductPriceByProductId(Long productId){
+        Product product=findProductById(productId);
+        return product.getPrice();
+    }
+
     @Transactional
     public void deleteProductByProductId(Long productId){
         Product product=findProductById(productId);
@@ -66,7 +72,6 @@ public class ProductService {
     }
 
     public void deleteAllProduct(){
-
         productRepository.deleteAll();
     }
 
