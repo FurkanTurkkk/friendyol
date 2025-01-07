@@ -25,4 +25,10 @@ public class CartController {
     public ResponseEntity<CartDto> findCartByCartId(@PathVariable("cartId")Long cartId){
         return ResponseEntity.ok(cartService.getCartByCartId(cartId));
     }
+
+    @DeleteMapping("/cart-id/{cartId}")
+    public ResponseEntity<String> deleteCartByCartId(@PathVariable("cartId")Long cartId){
+        cartService.deleteCartByCartId(cartId);
+        return ResponseEntity.ok("Cart deleted successfully");
+    }
 }

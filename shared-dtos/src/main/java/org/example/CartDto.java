@@ -5,23 +5,24 @@ import java.util.List;
 
 public class CartDto {
 
-    private String cartId;
+    private Long cartId;
     private BigDecimal price;
     private List<CartItemDto> cartItemDtoList;
 
     public CartDto() {
     }
 
-    public CartDto(BigDecimal price, List<CartItemDto> cartItemDtoList) {
+    public CartDto(Long cartId,BigDecimal price, List<CartItemDto> cartItemDtoList) {
+        this.cartId=cartId;
         this.price = price;
         this.cartItemDtoList = cartItemDtoList;
     }
 
-    public String getCartId() {
+    public Long getCartId() {
         return cartId;
     }
 
-    public void setCartId(String cartId) {
+    public void setCartId(Long cartId) {
         this.cartId = cartId;
     }
 

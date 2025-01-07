@@ -38,23 +38,44 @@ public class CartItemService {
         return converter.convert(cartItem);
     }
 
+    @Transactional
+    public void deleteCartItemByCartItemId(Long cartItemId) {
+        CartItem cartItem=cartItemRepository.findById(cartItemId)
+                .orElseThrow(()->new IllegalArgumentException("Cart item could not found by id : "+cartItemId));
+        cartItem.updateQuantity(0);
+        cartItem.updatePrice(BigDecimal.ZERO);
+        Cart cart=cartItem.getCart();
+        cart.getCartItemList().remove(cartItem);
+        cart.calculatePrice();
+        cartItemRepository.delete(cartItem);
+    }
+
     private CartItem saveCartItem(CartItem cartItem){
-        BigDecimal productPrice=feignClientService.findProductPriceByProductId(cartItem.getProductId());
-        Optional<CartItem> registeredCartItem=cartItemRepository.findByCartAndProductId(cartItem.getCart(),cartItem.getProductId());
+        CartItem savedCartItem=findCartItemByCartAndProductId(cartItem);
+        return cartItemRepository.save(savedCartItem);
+    }
+
+    private CartItem findCartItemByCartAndProductId(CartItem cartItem){
+        Optional<CartItem> registeredCartItem=cartItemRepository.findByCartAndProductId(cartItem.getCart()
+                ,cartItem.getProductId());
         if(registeredCartItem.isPresent()){
             CartItem existingCartItem=registeredCartItem.get();
-            System.out.println(existingCartItem);
-            existingCartItem.updateQuantity(cartItem.getQuantity());
-            existingCartItem.updatePrice(productPrice);
-            System.out.println("price : "+existingCartItem.getPrice()+" quantity : "+existingCartItem.getQuantity());
-            cartItemRepository.save(existingCartItem);
-            System.out.println("Existing cart item kaydedildi");
+            updateCartItemQuantity(existingCartItem,cartItem.getQuantity());
+            updateCartItemPrice(existingCartItem);
             return existingCartItem;
         }
-        CartItem newCartItem=new CartItem(cartItem.getCart(),cartItem.getProductId(),cartItem.getQuantity());
-        newCartItem.updatePrice(productPrice);
-        System.out.println(newCartItem);
-        cartItemRepository.save(newCartItem);
-        return newCartItem;
+        CartItem createdCartItem=new CartItem(cartItem.getCart(),cartItem.getProductId(), cartItem.getQuantity());
+        updateCartItemPrice(createdCartItem);
+        return createdCartItem;
     }
+
+    private void updateCartItemQuantity(CartItem cartItem,int quantity){
+        cartItem.updateQuantity(quantity);
+    }
+
+    private void updateCartItemPrice(CartItem cartItem){
+        BigDecimal price=feignClientService.findProductPriceByProductId(cartItem.getProductId());
+        cartItem.updatePrice(price);
+    }
+
 }

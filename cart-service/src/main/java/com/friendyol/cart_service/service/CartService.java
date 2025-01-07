@@ -3,7 +3,6 @@ package com.friendyol.cart_service.service;
 import com.friendyol.cart_service.converter.CartDtoConverter;
 import com.friendyol.cart_service.exception.CartNotFoundByCartId;
 import com.friendyol.cart_service.model.Cart;
-import com.friendyol.cart_service.model.CartItem;
 import com.friendyol.cart_service.repository.CartRepository;
 import com.friendyol.cart_service.request.RequestForCreateCart;
 import org.example.CartDto;
@@ -37,6 +36,10 @@ public class CartService {
                 .orElseThrow(()->new CartNotFoundByCartId("Cart could not found by id : "+cartId));
     }
 
+    public void deleteCartByCartId(Long cartId) {
+        cartRepository.deleteById(cartId);
+    }
+
 
     private Cart saveCart(Cart cart){
         Optional<Cart> registeredCart=cartRepository.findByUserId(cart.getUserId());
@@ -45,5 +48,4 @@ public class CartService {
         }
         return cartRepository.save(cart);
     }
-
 }
