@@ -1,6 +1,8 @@
 org/example/Main.class
 org/example/ProductDto.class
+org/example/OrderDto.class
 org/example/CartDto.class
+org/example/OrderItemDto.class
 org/example/CartItemDto.class
 org/example/UserDto.class
 org/example/CategoryDto.class

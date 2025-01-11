@@ -2,6 +2,7 @@ package com.friendyol.cart_service.service;
 
 import com.friendyol.cart_service.converter.CartDtoConverter;
 import com.friendyol.cart_service.exception.CartNotFoundByCartId;
+import com.friendyol.cart_service.exception.CartNotFoundByUserId;
 import com.friendyol.cart_service.model.Cart;
 import com.friendyol.cart_service.repository.CartRepository;
 import com.friendyol.cart_service.request.RequestForCreateCart;
@@ -40,6 +41,11 @@ public class CartService {
         cartRepository.deleteById(cartId);
     }
 
+    public CartDto findCartByUserId(String userId) {
+        Cart cart=cartRepository.findByUserId(userId)
+                .orElseThrow(()->new CartNotFoundByUserId("Cart could not found by user id : "+userId));
+        return converter.convert(cart);
+    }
 
     private Cart saveCart(Cart cart){
         Optional<Cart> registeredCart=cartRepository.findByUserId(cart.getUserId());
@@ -48,4 +54,6 @@ public class CartService {
         }
         return cartRepository.save(cart);
     }
+
+
 }

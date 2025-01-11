@@ -38,6 +38,13 @@ public class StockService {
         return "Stok bilgisi başarıyla silindi";
     }
 
+    public void updateStockByProductId(Long productId,Long quantity) {
+        Stock stock=stockRepository.findByProductId(productId)
+                .orElseThrow(()->new RuntimeException("Product not found by product id : "+productId));
+        stock.decreaseQuantity(quantity);
+        stockRepository.save(stock);
+    }
+
     private Stock findByProductId(Long productId){
         return stockRepository.findByProductId(productId)
                 .orElseThrow(()->new RuntimeException("Bu product id ye sahip ürün bulunamadı product id : "+productId));
@@ -52,5 +59,6 @@ public class StockService {
         }
         return stockRepository.save(stock);
     }
+
 
 }

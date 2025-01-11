@@ -20,6 +20,12 @@ public class StockController {
         return ResponseEntity.ok(stockService.createStock(productId,quantity));
     }
 
+    @PutMapping("/update-stock/{productId}")
+    public void updateStock(@PathVariable("productId")Long productId,
+                            @RequestBody Long quantity){
+        stockService.updateStockByProductId(productId,quantity);
+    }
+
     @GetMapping("/product/{productId}")
     public ResponseEntity<StockDto> findStockInformationByProductId(@PathVariable("productId")Long productId){
         return ResponseEntity.ok(stockService.findStockInformationByProductId(productId));

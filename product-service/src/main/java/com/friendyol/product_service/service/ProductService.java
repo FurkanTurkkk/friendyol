@@ -95,4 +95,9 @@ public class ProductService {
     }
 
 
+    public Long findProductIdByProductName(String productName) {
+        Product product=productRepository.findByName(productName)
+                .orElseThrow(()->new RuntimeException("Product could not found by name"));
+        return product.getId();
+    }
 }

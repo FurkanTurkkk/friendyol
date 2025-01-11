@@ -50,6 +50,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.findProductNameByProductId(id));
     }
 
+    @GetMapping("product-id/{productName}")
+    public ResponseEntity<Long> findProductIdByProductName(@PathVariable("productName")String productName){
+        return ResponseEntity.ok(productService.findProductIdByProductName(productName));
+    }
+
     @DeleteMapping("/delete-by-productId/{productId}")
     public ResponseEntity<String> deleteProductByProductId(@PathVariable("productId")Long productId){
         productService.deleteProductByProductId(productId);

@@ -1,6 +1,7 @@
 package com.friendyol.cart_service.service;
 
 import com.friendyol.cart_service.converter.CartItemDtoConverter;
+import com.friendyol.cart_service.exception.CartNotFoundByCartId;
 import com.friendyol.cart_service.model.Cart;
 import com.friendyol.cart_service.model.CartItem;
 import com.friendyol.cart_service.repository.CartItemRepository;
@@ -11,6 +12,7 @@ import org.example.CartItemDto;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
