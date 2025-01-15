@@ -64,6 +64,12 @@ public class ProductService {
         return product.getPrice();
     }
 
+    public Long findProductIdByProductName(String productName) {
+        Product product=productRepository.findByName(productName)
+                .orElseThrow(()->new RuntimeException("Product could not found by name"));
+        return product.getId();
+    }
+
     @Transactional
     public void deleteProductByProductId(Long productId){
         Product product=findProductById(productId);
@@ -94,10 +100,4 @@ public class ProductService {
         productRepository.save(product);
     }
 
-
-    public Long findProductIdByProductName(String productName) {
-        Product product=productRepository.findByName(productName)
-                .orElseThrow(()->new RuntimeException("Product could not found by name"));
-        return product.getId();
-    }
 }

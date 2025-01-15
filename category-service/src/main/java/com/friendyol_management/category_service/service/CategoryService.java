@@ -41,6 +41,7 @@ public class CategoryService {
         Category category=findCategoryById(categoryId);
         category.updateCategoryName(categoryName);
         categoryRepository.save(category);
+
         return converter.convert(category);
     }
 
